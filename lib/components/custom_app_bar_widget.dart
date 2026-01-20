@@ -63,7 +63,7 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                     ),
                   ),
                   Text(
-                    'NearMe',
+                    'NearMe ',
                     style: FlutterFlowTheme.of(context).headlineSmall.override(
                           font: GoogleFonts.poppins(
                             fontWeight: FlutterFlowTheme.of(context)
