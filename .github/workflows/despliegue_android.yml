@@ -43,7 +43,7 @@ jobs:
 
       - name: Deploy Android build
         run: |
-          git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/dgarsau/movil-FlutterFlow mobile-repo
+          git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/garsau/NearMe-Android mobile-repo
           rm -rf mobile-repo/*
           cp out/app-release.apk mobile-repo/ || true
           cd mobile-repo
