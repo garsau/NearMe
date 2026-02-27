@@ -1,4 +1,4 @@
-package com.mycompany.nearme
+package com.nearme.nearme
 
 import io.flutter.embedding.android.FlutterActivity
 

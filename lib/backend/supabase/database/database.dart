@@ -6,4 +6,11 @@ export 'row.dart';
 export 'table.dart';
 
 export 'tables/profiles.dart';
+export 'tables/reports.dart';
 export 'tables/posts.dart';
+export 'tables/follows.dart';
+export 'tables/comment_likes.dart';
+export 'tables/post_likes.dart';
+export 'tables/comments.dart';
+export 'tables/posts_with_authors.dart';
+export 'tables/notifications.dart';

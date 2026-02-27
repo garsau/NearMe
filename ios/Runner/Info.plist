@@ -42,9 +42,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 
-
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need your location to show nearby posts and users. Your location is kept private and is only used to improve your experience.</string>
+    <string>In order to search nearby, this app requires access to your current location.</string>
+
 
 
 

@@ -1,6 +1,8 @@
-import '/components/custom_app_bar_widget.dart';
+import '/components/bar/custom_app_bar/custom_app_bar_widget.dart';
+import '/components/bar/custom_nav_bar/custom_nav_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
@@ -19,11 +21,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  LatLng? currentUserLocationValue;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+
+    getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
+        .then((loc) => safeSetState(() => currentUserLocationValue = loc));
   }
 
   @override
@@ -35,6 +41,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentUserLocationValue == null) {
+      return Container(
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        child: Center(
+          child: SizedBox(
+            width: 50.0,
+            height: 50.0,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                FlutterFlowTheme.of(context).primary,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -45,26 +68,66 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
           top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
+          child: Stack(
             children: [
-              wrapWithModel(
-                model: _model.customAppBarModel,
-                updateCallback: () => safeSetState(() {}),
-                child: CustomAppBarWidget(),
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  height: 100.0,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).primaryBackground,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0.0),
-                      bottomRight: Radius.circular(0.0),
-                      topLeft: Radius.circular(32.0),
-                      topRight: Radius.circular(32.0),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(0.0),
+                          bottomRight: Radius.circular(0.0),
+                          topLeft: Radius.circular(0.0),
+                          topRight: Radius.circular(0.0),
+                        ),
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: custom_widgets.ClickableMap(
+                          width: double.infinity,
+                          height: double.infinity,
+                          borderRadius: 0.0,
+                          initialLocation: currentUserLocationValue,
+                          onLocationSelected: (selectedLocation) async {},
+                        ),
+                      ),
                     ),
+                  ),
+                ],
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.0, -1.0),
+                child: wrapWithModel(
+                  model: _model.customAppBarModel,
+                  updateCallback: () => safeSetState(() {}),
+                  child: CustomAppBarWidget(),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.0, 1.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xCBE8F5E9),
+                        Color(0xCCAADAFF),
+                        Color(0xCDF8F9FA)
+                      ],
+                      stops: [0.0, 0.5, 1.0],
+                      begin: AlignmentDirectional(1.0, 0.0),
+                      end: AlignmentDirectional(-1.0, 0),
+                    ),
+                  ),
+                  child: wrapWithModel(
+                    model: _model.customNavBarModel,
+                    updateCallback: () => safeSetState(() {}),
+                    child: CustomNavBarWidget(),
                   ),
                 ),
               ),

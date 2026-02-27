@@ -7,3 +7,4 @@ export '/pages/auth/set_username/set_username_widget.dart'
     show SetUsernameWidget;
 export '/pages/home/feed/feed_widget.dart' show FeedWidget;
 export '/pages/profile/profile/profile_widget.dart' show ProfileWidget;
+export '/pages/post/new_post/new_post_widget.dart' show NewPostWidget;

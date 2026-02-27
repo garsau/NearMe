@@ -361,10 +361,11 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                         fillColor: FlutterFlowTheme.of(context)
                                             .primaryBackground,
                                         suffixIcon: InkWell(
-                                          onTap: () => safeSetState(
-                                            () => _model.passwordVisibility =
-                                                !_model.passwordVisibility,
-                                          ),
+                                          onTap: () async {
+                                            safeSetState(() =>
+                                                _model.passwordVisibility =
+                                                    !_model.passwordVisibility);
+                                          },
                                           focusNode:
                                               FocusNode(skipTraversal: true),
                                           child: Icon(
@@ -485,12 +486,12 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                         fillColor: FlutterFlowTheme.of(context)
                                             .primaryBackground,
                                         suffixIcon: InkWell(
-                                          onTap: () => safeSetState(
-                                            () => _model
+                                          onTap: () async {
+                                            safeSetState(() => _model
                                                     .passwordConfirmVisibility =
                                                 !_model
-                                                    .passwordConfirmVisibility,
-                                          ),
+                                                    .passwordConfirmVisibility);
+                                          },
                                           focusNode:
                                               FocusNode(skipTraversal: true),
                                           child: Icon(
@@ -563,9 +564,19 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                         return;
                                       }
 
-                                      context.pushNamedAuth(
-                                          SetUsernameWidget.routeName,
-                                          context.mounted);
+                                      context.goNamedAuth(
+                                        SetUsernameWidget.routeName,
+                                        context.mounted,
+                                        extra: <String, dynamic>{
+                                          '__transition_info__': TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                          ),
+                                        },
+                                      );
                                     },
                                     text: 'Create Account',
                                     options: FFButtonOptions(
