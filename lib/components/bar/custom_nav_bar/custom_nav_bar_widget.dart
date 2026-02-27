@@ -48,7 +48,7 @@ class _CustomNavBarWidgetState extends State<CustomNavBarWidget> {
           width: double.infinity,
           height: 60.0,
           decoration: BoxDecoration(
-            color: Color(0xCCFFFFFF),
+            color: Color(0x9AFFFFFF),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,

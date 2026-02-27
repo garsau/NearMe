@@ -166,7 +166,7 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                                     .labelMedium
                                     .fontStyle,
                               ),
-                      hintText: 'TextField',
+                      hintText: 'What’s happening around you?',
                       hintStyle:
                           FlutterFlowTheme.of(context).labelMedium.override(
                                 font: GoogleFonts.poppins(

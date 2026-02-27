@@ -24,7 +24,7 @@ class FeedModel extends FlutterFlowModel<FeedWidget> {
   List<PostsWithAuthorsRow>? postsOutputLoad;
   // Model for CustomAppBar component.
   late CustomAppBarModel customAppBarModel;
-  // Stores action output result for [Backend Call - Query Rows] action in ListView widget.
+  // Stores action output result for [Backend Call - Query Rows] action in Column widget.
   List<PostsWithAuthorsRow>? postOutputRefresh;
   // Model for CustomNavBar component.
   late CustomNavBarModel customNavBarModel;

@@ -60,7 +60,7 @@ class _FeedWidgetState extends State<FeedWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
           top: true,
           child: Stack(
@@ -74,34 +74,37 @@ class _FeedWidgetState extends State<FeedWidget> {
                     child: CustomAppBarWidget(),
                   ),
                   Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Builder(
-                            builder: (context) {
-                              final listPosts = _model.localPosts.toList();
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        _model.postOutputRefresh =
+                            await PostsWithAuthorsTable().queryRows(
+                          queryFn: (q) => q,
+                        );
+                        _model.localPosts = functions
+                            .mapRowsToPostView(
+                                _model.postOutputRefresh!.toList())
+                            .toList()
+                            .cast<PostViewStruct>();
+                        safeSetState(() {});
+                      },
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                final listPosts = _model.localPosts.toList();
 
-                              return RefreshIndicator(
-                                onRefresh: () async {
-                                  _model.postOutputRefresh =
-                                      await PostsWithAuthorsTable().queryRows(
-                                    queryFn: (q) => q,
-                                  );
-                                  _model.localPosts = functions
-                                      .mapRowsToPostView(
-                                          _model.postOutputRefresh!.toList())
-                                      .toList()
-                                      .cast<PostViewStruct>();
-                                  safeSetState(() {});
-                                },
-                                child: ListView.builder(
+                                return ListView.builder(
                                   padding: EdgeInsets.fromLTRB(
                                     0,
                                     0,
                                     0,
                                     75.0,
                                   ),
+                                  primary: false,
+                                  shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemCount: listPosts.length,
                                   itemBuilder: (context, listPostsIndex) {
@@ -113,12 +116,12 @@ class _FeedWidgetState extends State<FeedWidget> {
                                       postView: listPostsItem,
                                     );
                                   },
-                                ),
-                              );
-                            },
-                          ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
