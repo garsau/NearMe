@@ -34,7 +34,7 @@ jobs:
       # --- PASO CRÍTICO: INYECCIÓN DE API KEY ---
       - name: Inject Google Maps API Key
         env:
-          MAPS_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPS_KEY: ${{ secrets.MAPS_API_KEY }}
         run: |
           # Reemplaza el texto "MAPS_API_KEY_PLACEHOLDER" por el secreto real
           # Se aplica en el AndroidManifest.xml antes de compilar
