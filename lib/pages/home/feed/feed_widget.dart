@@ -6,6 +6,7 @@ import '/components/post/custom_post_feed/custom_post_feed_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'feed_model.dart';
@@ -66,7 +67,7 @@ class _FeedWidgetState extends State<FeedWidget> {
           child: Stack(
             children: [
               Column(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   wrapWithModel(
                     model: _model.customAppBarModel,
@@ -74,54 +75,61 @@ class _FeedWidgetState extends State<FeedWidget> {
                     child: CustomAppBarWidget(),
                   ),
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        _model.postOutputRefresh =
-                            await PostsWithAuthorsTable().queryRows(
-                          queryFn: (q) => q,
-                        );
-                        _model.localPosts = functions
-                            .mapRowsToPostView(
-                                _model.postOutputRefresh!.toList())
-                            .toList()
-                            .cast<PostViewStruct>();
-                        safeSetState(() {});
-                      },
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Builder(
-                              builder: (context) {
-                                final listPosts = _model.localPosts.toList();
+                    child: Builder(
+                      builder: (context) {
+                        final listPosts = _model.localPosts.toList();
 
-                                return ListView.builder(
-                                  padding: EdgeInsets.fromLTRB(
-                                    0,
-                                    0,
-                                    0,
-                                    75.0,
-                                  ),
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: listPosts.length,
-                                  itemBuilder: (context, listPostsIndex) {
-                                    final listPostsItem =
-                                        listPosts[listPostsIndex];
-                                    return CustomPostFeedWidget(
-                                      key: Key(
-                                          'Key1r9_${listPostsIndex}_of_${listPosts.length}'),
-                                      postView: listPostsItem,
-                                    );
-                                  },
-                                );
-                              },
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            _model.postOutputRefresh =
+                                await PostsWithAuthorsTable().queryRows(
+                              queryFn: (q) => q,
+                            );
+                            _model.localPosts = functions
+                                .mapRowsToPostView(
+                                    _model.postOutputRefresh!.toList())
+                                .toList()
+                                .cast<PostViewStruct>();
+                            safeSetState(() {});
+                          },
+                          child: ListView.builder(
+                            padding: EdgeInsets.fromLTRB(
+                              0,
+                              0,
+                              0,
+                              75.0,
                             ),
-                          ],
-                        ),
-                      ),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: listPosts.length,
+                            itemBuilder: (context, listPostsIndex) {
+                              final listPostsItem = listPosts[listPostsIndex];
+                              return InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed(
+                                    CommentsWidget.routeName,
+                                    queryParameters: {
+                                      'post': serializeParam(
+                                        listPostsItem,
+                                        ParamType.DataStruct,
+                                      ),
+                                    }.withoutNulls,
+                                  );
+                                },
+                                child: CustomPostFeedWidget(
+                                  key: Key(
+                                      'Keyxsb_${listPostsIndex}_of_${listPosts.length}'),
+                                  postView: listPostsItem,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

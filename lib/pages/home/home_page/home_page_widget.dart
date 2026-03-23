@@ -113,16 +113,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 alignment: AlignmentDirectional(0.0, 1.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xCBE8F5E9),
-                        Color(0xCCAADAFF),
-                        Color(0xCDF8F9FA)
-                      ],
-                      stops: [0.0, 0.5, 1.0],
-                      begin: AlignmentDirectional(1.0, 0.0),
-                      end: AlignmentDirectional(-1.0, 0),
-                    ),
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
                   child: wrapWithModel(
                     model: _model.customNavBarModel,

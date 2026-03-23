@@ -3,9 +3,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+const kThemeModeKey = '__theme_mode__';
+
+SharedPreferences? _prefs;
+
 abstract class FlutterFlowTheme {
+  static Future initialize() async =>
+      _prefs = await SharedPreferences.getInstance();
+
+  static ThemeMode get themeMode {
+    final darkMode = _prefs?.getBool(kThemeModeKey);
+    return darkMode == null
+        ? ThemeMode.system
+        : darkMode
+            ? ThemeMode.dark
+            : ThemeMode.light;
+  }
+
+  static void saveThemeMode(ThemeMode mode) => mode == ThemeMode.system
+      ? _prefs?.remove(kThemeModeKey)
+      : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
+
   static FlutterFlowTheme of(BuildContext context) {
-    return LightModeTheme();
+    return Theme.of(context).brightness == Brightness.dark
+        ? DarkModeTheme()
+        : LightModeTheme();
   }
 
   @Deprecated('Use primary instead')
@@ -31,6 +55,10 @@ abstract class FlutterFlowTheme {
   late Color warning;
   late Color error;
   late Color info;
+
+  late Color backgroundBlur;
+
+  FFDesignTokens get designToken => FFDesignTokens(this);
 
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
@@ -134,6 +162,8 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color warning = const Color(0xFFF9CF58);
   late Color error = const Color(0xFFFF5963);
   late Color info = const Color(0xFFFFFFFF);
+
+  late Color backgroundBlur = const Color(0xCBFFFFFF);
 }
 
 abstract class Typography {
@@ -294,6 +324,84 @@ class ThemeTypography extends Typography {
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
       );
+}
+
+class DarkModeTheme extends FlutterFlowTheme {
+  @Deprecated('Use primary instead')
+  Color get primaryColor => primary;
+  @Deprecated('Use secondary instead')
+  Color get secondaryColor => secondary;
+  @Deprecated('Use tertiary instead')
+  Color get tertiaryColor => tertiary;
+
+  late Color primary = const Color(0xFF4B39EF);
+  late Color secondary = const Color(0xFF39D2C0);
+  late Color tertiary = const Color(0xFFEE8B60);
+  late Color alternate = const Color(0xFF262D34);
+  late Color primaryText = const Color(0xFFFFFFFF);
+  late Color secondaryText = const Color(0xFF95A1AC);
+  late Color primaryBackground = const Color(0xFF1F1F1F);
+  late Color secondaryBackground = const Color(0xFF000000);
+  late Color accent1 = const Color(0x4C4B39EF);
+  late Color accent2 = const Color(0x4D39D2C0);
+  late Color accent3 = const Color(0x4DEE8B60);
+  late Color accent4 = const Color(0xB2262D34);
+  late Color success = const Color(0xFF249689);
+  late Color warning = const Color(0xFFF9CF58);
+  late Color error = const Color(0xFFFF5963);
+  late Color info = const Color(0xFFFFFFFF);
+
+  late Color backgroundBlur = const Color(0xCC000000);
+}
+
+class FFDesignTokens {
+  const FFDesignTokens(this.theme);
+  final FlutterFlowTheme theme;
+  FFSpacing get spacing => const FFSpacing();
+  FFRadius get radius => const FFRadius();
+  FFShadows get shadow => FFShadows(theme);
+}
+
+class FFSpacing {
+  const FFSpacing();
+  double get xs => 4.0;
+  double get sm => 8.0;
+  double get md => 16.0;
+  double get lg => 24.0;
+  double get xl => 32.0;
+}
+
+class FFRadius {
+  const FFRadius();
+  double get sm => 8.0;
+  double get md => 16.0;
+  double get lg => 24.0;
+  double get full => 9999.0;
+}
+
+class FFShadows {
+  const FFShadows(this.theme);
+  final FlutterFlowTheme theme;
+  BoxShadow get sm => const BoxShadow(
+      blurRadius: 3.0,
+      color: const Color(0x1A000000),
+      offset: const Offset(0.0, 1.0),
+      spreadRadius: 0.0);
+  BoxShadow get md => const BoxShadow(
+      blurRadius: 6.0,
+      color: const Color(0x1A000000),
+      offset: const Offset(0.0, 3.0),
+      spreadRadius: 0.0);
+  BoxShadow get lg => const BoxShadow(
+      blurRadius: 15.0,
+      color: const Color(0x1A000000),
+      offset: const Offset(0.0, 8.0),
+      spreadRadius: 0.0);
+  BoxShadow get xl => const BoxShadow(
+      blurRadius: 25.0,
+      color: const Color(0x1A000000),
+      offset: const Offset(0.0, 16.0),
+      spreadRadius: 0.0);
 }
 
 extension TextStyleHelper on TextStyle {

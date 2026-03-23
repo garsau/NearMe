@@ -122,6 +122,32 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: NewPostWidget.routeName,
           path: NewPostWidget.routePath,
           builder: (context, params) => NewPostWidget(),
+        ),
+        FFRoute(
+          name: CommentsWidget.routeName,
+          path: CommentsWidget.routePath,
+          builder: (context, params) => CommentsWidget(
+            post: params.getParam(
+              'post',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: PostViewStruct.fromSerializableMap,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: NewCommentWidget.routeName,
+          path: NewCommentWidget.routePath,
+          builder: (context, params) => NewCommentWidget(
+            parentCommentId: params.getParam(
+              'parentCommentId',
+              ParamType.String,
+            ),
+            postId: params.getParam(
+              'postId',
+              ParamType.String,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

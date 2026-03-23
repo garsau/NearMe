@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'custom_app_bar_model.dart';
 export 'custom_app_bar_model.dart';
@@ -61,8 +61,15 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 5.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: SvgPicture.asset(
-                            'assets/images/logo.svg',
+                          child: CachedNetworkImage(
+                            fadeInDuration: Duration(milliseconds: 500),
+                            fadeOutDuration: Duration(milliseconds: 500),
+                            imageUrl: !(Theme.of(context).brightness ==
+                                    Brightness.dark)
+                                ? 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/near-me-a6hnus/assets/0l3w60uz153f/logo.svg'
+                                : 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/near-me-a6hnus/assets/rnzt47ehdxsh/logo_dark.svg',
+                            width: 24.0,
+                            height: 24.0,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -120,13 +127,6 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 ),
               ),
             ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          height: 1.0,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).primaryBackground,
           ),
         ),
       ],

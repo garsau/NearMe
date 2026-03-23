@@ -8,3 +8,5 @@ export '/pages/auth/set_username/set_username_widget.dart'
 export '/pages/home/feed/feed_widget.dart' show FeedWidget;
 export '/pages/profile/profile/profile_widget.dart' show ProfileWidget;
 export '/pages/post/new_post/new_post_widget.dart' show NewPostWidget;
+export '/pages/home/comments/comments_widget.dart' show CommentsWidget;
+export '/pages/post/new_comment/new_comment_widget.dart' show NewCommentWidget;

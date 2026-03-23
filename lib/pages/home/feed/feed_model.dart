@@ -3,6 +3,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/bar/custom_app_bar/custom_app_bar_widget.dart';
 import '/components/bar/custom_nav_bar/custom_nav_bar_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'feed_widget.dart' show FeedWidget;
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class FeedModel extends FlutterFlowModel<FeedWidget> {
   List<PostsWithAuthorsRow>? postsOutputLoad;
   // Model for CustomAppBar component.
   late CustomAppBarModel customAppBarModel;
-  // Stores action output result for [Backend Call - Query Rows] action in Column widget.
+  // Stores action output result for [Backend Call - Query Rows] action in ListView widget.
   List<PostsWithAuthorsRow>? postOutputRefresh;
   // Model for CustomNavBar component.
   late CustomNavBarModel customNavBarModel;
