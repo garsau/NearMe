@@ -12,10 +12,7 @@
         android:label="NearMe"
         tools:replace="android:label"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"
-        <meta-data 
-    android:name="com.google.android.geo.API_KEY" 
-    android:value="MAPS_API_KEY_PLACEHOLDER"/>>
+        android:requestLegacyExternalStorage="true">
 
         <activity
             android:name=".MainActivity"
