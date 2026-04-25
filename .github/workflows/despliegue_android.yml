@@ -17,6 +17,9 @@ jobs:
       - name: Show AndroidManifest
         run: cat android/app/src/main/AndroidManifest.xml
 
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
