@@ -23,6 +23,6 @@ class CommentLikesRow extends SupabaseDataRow {
   int get value => getField<int>('value')!;
   set value(int value) => setField<int>('value', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 }

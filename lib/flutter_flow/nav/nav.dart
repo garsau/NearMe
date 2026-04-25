@@ -114,11 +114,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => FeedWidget(),
         ),
         FFRoute(
-          name: ProfileWidget.routeName,
-          path: ProfileWidget.routePath,
-          builder: (context, params) => ProfileWidget(),
-        ),
-        FFRoute(
           name: NewPostWidget.routeName,
           path: NewPostWidget.routePath,
           builder: (context, params) => NewPostWidget(),
@@ -146,6 +141,28 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             postId: params.getParam(
               'postId',
               ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: MyProfileWidget.routeName,
+          path: MyProfileWidget.routePath,
+          builder: (context, params) => MyProfileWidget(),
+        ),
+        FFRoute(
+          name: EditProfileWidget.routeName,
+          path: EditProfileWidget.routePath,
+          builder: (context, params) => EditProfileWidget(),
+        ),
+        FFRoute(
+          name: UserProfileWidget.routeName,
+          path: UserProfileWidget.routePath,
+          builder: (context, params) => UserProfileWidget(
+            user: params.getParam(
+              'user',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: ProfileStruct.fromSerializableMap,
             ),
           ),
         )

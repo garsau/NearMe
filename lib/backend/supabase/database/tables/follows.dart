@@ -20,6 +20,6 @@ class FollowsRow extends SupabaseDataRow {
   String get followedId => getField<String>('followed_id')!;
   set followedId(String value) => setField<String>('followed_id', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 }

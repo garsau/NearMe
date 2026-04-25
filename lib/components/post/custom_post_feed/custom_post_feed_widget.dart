@@ -1,6 +1,8 @@
 import '/backend/schema/structs/index.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -64,16 +66,45 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Container(
-                          width: 32.0,
-                          height: 32.0,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.network(
-                            'https://picsum.photos/seed/918/600',
-                            fit: BoxFit.cover,
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            _model.userProfile =
+                                await ProfilesTable().queryRows(
+                              queryFn: (q) => q.eqOrNull(
+                                'id',
+                                widget.postView?.authorId,
+                              ),
+                            );
+
+                            context.pushNamed(
+                              UserProfileWidget.routeName,
+                              queryParameters: {
+                                'user': serializeParam(
+                                  functions.mapRowsToProfile(
+                                      _model.userProfile!.toList()),
+                                  ParamType.DataStruct,
+                                ),
+                              }.withoutNulls,
+                            );
+
+                            safeSetState(() {});
+                          },
+                          child: Container(
+                            width: 32.0,
+                            height: 32.0,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              functions
+                                  .getStringUrl(widget.postView?.avatarUrl)!,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ],

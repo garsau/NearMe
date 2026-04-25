@@ -14,8 +14,8 @@ class ReportsRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => ReportsTable();
 
-  String get id => getField<String>('id')!;
-  set id(String value) => setField<String>('id', value);
+  String? get id => getField<String>('id');
+  set id(String? value) => setField<String>('id', value);
 
   String? get reporterId => getField<String>('reporter_id');
   set reporterId(String? value) => setField<String>('reporter_id', value);
@@ -29,9 +29,9 @@ class ReportsRow extends SupabaseDataRow {
   String? get reason => getField<String>('reason');
   set reason(String? value) => setField<String>('reason', value);
 
-  String get status => getField<String>('status')!;
-  set status(String value) => setField<String>('status', value);
+  String? get status => getField<String>('status');
+  set status(String? value) => setField<String>('status', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 }

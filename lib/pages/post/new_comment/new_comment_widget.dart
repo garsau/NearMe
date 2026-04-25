@@ -55,7 +55,7 @@ class _NewCommentWidgetState extends State<NewCommentWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
           top: true,
           child: Padding(
@@ -91,7 +91,7 @@ class _NewCommentWidgetState extends State<NewCommentWidget> {
                         );
                         context.safePop();
                       },
-                      text: 'Comentar',
+                      text: 'comment',
                       options: FFButtonOptions(
                         height: 30.0,
                         padding: EdgeInsetsDirectional.fromSTEB(

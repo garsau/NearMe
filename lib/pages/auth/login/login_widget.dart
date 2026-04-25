@@ -80,8 +80,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(16.0),
                               bottomRight: Radius.circular(16.0),
-                              topLeft: Radius.circular(0.0),
-                              topRight: Radius.circular(0.0),
                             ),
                           ),
                           alignment: AlignmentDirectional(-1.0, 0.0),

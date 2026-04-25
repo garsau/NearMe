@@ -1,9 +1,9 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import '/index.dart';
-import 'profile_widget.dart' show ProfileWidget;
+import 'custom_profile_app_bar_widget.dart' show CustomProfileAppBarWidget;
 import 'package:flutter/material.dart';
 
-class ProfileModel extends FlutterFlowModel<ProfileWidget> {
+class CustomProfileAppBarModel
+    extends FlutterFlowModel<CustomProfileAppBarWidget> {
   @override
   void initState(BuildContext context) {}
 

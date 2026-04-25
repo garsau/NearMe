@@ -14,8 +14,8 @@ class CommentsRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => CommentsTable();
 
-  String get id => getField<String>('id')!;
-  set id(String value) => setField<String>('id', value);
+  String? get id => getField<String>('id');
+  set id(String? value) => setField<String>('id', value);
 
   String get postId => getField<String>('post_id')!;
   set postId(String value) => setField<String>('post_id', value);
@@ -26,8 +26,8 @@ class CommentsRow extends SupabaseDataRow {
   String get content => getField<String>('content')!;
   set content(String value) => setField<String>('content', value);
 
-  int get votesScore => getField<int>('votes_score')!;
-  set votesScore(int value) => setField<int>('votes_score', value);
+  int? get votesScore => getField<int>('votes_score');
+  set votesScore(int? value) => setField<int>('votes_score', value);
 
   String? get parentCommentId => getField<String>('parent_comment_id');
   set parentCommentId(String? value) =>
@@ -36,6 +36,6 @@ class CommentsRow extends SupabaseDataRow {
   DateTime? get deletedAt => getField<DateTime>('deleted_at');
   set deletedAt(DateTime? value) => setField<DateTime>('deleted_at', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 }

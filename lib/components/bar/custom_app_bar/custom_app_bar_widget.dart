@@ -1,9 +1,13 @@
+import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'custom_app_bar_model.dart';
 export 'custom_app_bar_model.dart';
 
@@ -38,6 +42,8 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -109,7 +115,19 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
-                      context.pushNamed(ProfileWidget.routeName);
+                      _model.userProfile = await ProfilesTable().queryRows(
+                        queryFn: (q) => q.eqOrNull(
+                          'id',
+                          currentUserUid,
+                        ),
+                      );
+                      FFAppState().userProfile = functions
+                          .mapRowsToProfile(_model.userProfile!.toList());
+                      safeSetState(() {});
+
+                      context.pushNamed(MyProfileWidget.routeName);
+
+                      safeSetState(() {});
                     },
                     child: Container(
                       width: 40.0,
@@ -119,7 +137,8 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                         shape: BoxShape.circle,
                       ),
                       child: Image.network(
-                        'https://picsum.photos/seed/972/600',
+                        functions
+                            .getStringUrl(FFAppState().userProfile.avatarUrl)!,
                         fit: BoxFit.cover,
                       ),
                     ),

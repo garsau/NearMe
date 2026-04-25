@@ -26,12 +26,15 @@ class ProfilesRow extends SupabaseDataRow {
   String? get bio => getField<String>('bio');
   set bio(String? value) => setField<String>('bio', value);
 
-  int get followersCount => getField<int>('followers_count')!;
-  set followersCount(int value) => setField<int>('followers_count', value);
+  int? get followersCount => getField<int>('followers_count');
+  set followersCount(int? value) => setField<int>('followers_count', value);
 
-  int get followingCount => getField<int>('following_count')!;
-  set followingCount(int value) => setField<int>('following_count', value);
+  int? get followingCount => getField<int>('following_count');
+  set followingCount(int? value) => setField<int>('following_count', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
+
+  int? get postsCount => getField<int>('posts_count');
+  set postsCount(int? value) => setField<int>('posts_count', value);
 }

@@ -29,3 +29,22 @@ List<PostViewStruct> mapRowsToPostView(List<PostsWithAuthorsRow> rows) {
   }).toList();
   //
 }
+
+ProfileStruct mapRowsToProfile(List<ProfilesRow> row) {
+  final profile = row.first;
+
+  return ProfileStruct(
+    id: profile.id,
+    username: profile.username,
+    avatarUrl: profile.avatarUrl,
+    bio: profile.bio,
+    followersCount: profile.followersCount,
+    followingCount: profile.followingCount,
+    postsCount: profile.postsCount,
+    createdAt: profile.createdAt,
+  );
+}
+
+String? getStringUrl(String? stringUrl) {
+  return stringUrl;
+}

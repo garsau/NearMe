@@ -69,7 +69,7 @@ class _NewPostWidgetState extends State<NewPostWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
           top: true,
           child: Padding(
@@ -105,7 +105,7 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                         );
                         context.safePop();
                       },
-                      text: 'Publicar',
+                      text: 'post',
                       options: FFButtonOptions(
                         height: 30.0,
                         padding: EdgeInsetsDirectional.fromSTEB(

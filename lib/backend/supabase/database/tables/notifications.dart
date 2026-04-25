@@ -15,8 +15,8 @@ class NotificationsRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => NotificationsTable();
 
-  String get id => getField<String>('id')!;
-  set id(String value) => setField<String>('id', value);
+  String? get id => getField<String>('id');
+  set id(String? value) => setField<String>('id', value);
 
   String get userId => getField<String>('user_id')!;
   set userId(String value) => setField<String>('user_id', value);
@@ -27,9 +27,9 @@ class NotificationsRow extends SupabaseDataRow {
   dynamic get dataField => getField<dynamic>('data');
   set dataField(dynamic value) => setField<dynamic>('data', value);
 
-  bool get isRead => getField<bool>('is_read')!;
-  set isRead(bool value) => setField<bool>('is_read', value);
+  bool? get isRead => getField<bool>('is_read');
+  set isRead(bool? value) => setField<bool>('is_read', value);
 
-  DateTime get createdAt => getField<DateTime>('created_at')!;
-  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 }
