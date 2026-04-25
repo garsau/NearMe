@@ -14,16 +14,6 @@ jobs:
         run: |
           sed -i 's|android:requestLegacyExternalStorage="true"|android:requestLegacyExternalStorage="true">\n        <meta-data android:name="com.google.android.geo.API_KEY" android:value="MAPS_API_KEY_PLACEHOLDER"/|' android/app/src/main/AndroidManifest.xml
 
-      - name: Update Kotlin version
-        run: |
-          sed -i 's/org.jetbrains.kotlin.android" version "[^"]*"/org.jetbrains.kotlin.android" version "2.1.0"/' android/settings.gradle
-
-      - name: Show AndroidManifest
-        run: cat android/app/src/main/AndroidManifest.xml
-
-      - name: Install xmllint
-        run: sudo apt-get install -y libxml2-utils
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -41,9 +31,9 @@ jobs:
 
       - name: Inject Google Maps API Key
         env:
-          MAPS_KEY: ${{ secrets.MAPS_API_KEY }}
+          MAPS_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
-          sed -i "s|MAPS_API_KEY_PLACEHOLDER|$MAPS_KEY|g" android/app/src/main/AndroidManifest.xml
+          sed -i "s/MAPS_API_KEY_PLACEHOLDER/$MAPS_KEY/g" android/app/src/main/AndroidManifest.xml
           
           if grep -q "MAPS_API_KEY_PLACEHOLDER" android/app/src/main/AndroidManifest.xml; then
             echo "Error: El placeholder no fue reemplazado."
@@ -51,9 +41,6 @@ jobs:
           else
             echo "API Key inyectada correctamente."
           fi
-
-      - name: Verify AndroidManifest
-        run: xmllint --noout android/app/src/main/AndroidManifest.xml
 
       - name: Build APK (release)
         run: flutter build apk --release
