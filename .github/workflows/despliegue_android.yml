@@ -14,6 +14,11 @@ jobs:
         run: |
           sed -i 's|android:requestLegacyExternalStorage="true"|android:requestLegacyExternalStorage="true">\n        <meta-data android:name="com.google.android.geo.API_KEY" android:value="MAPS_API_KEY_PLACEHOLDER"/|' android/app/src/main/AndroidManifest.xml
 
+      - name: Validate manifest
+        run: |
+          apt-get install -y libxml2-utils -q
+          xmllint --noout android/app/src/main/AndroidManifest.xml && echo "Manifest OK"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -34,7 +39,6 @@ jobs:
           MAPS_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
           sed -i "s/MAPS_API_KEY_PLACEHOLDER/$MAPS_KEY/g" android/app/src/main/AndroidManifest.xml
-          
           if grep -q "MAPS_API_KEY_PLACEHOLDER" android/app/src/main/AndroidManifest.xml; then
             echo "Error: El placeholder no fue reemplazado."
             exit 1
@@ -48,18 +52,16 @@ jobs:
       - name: Package APK
         run: |
           mkdir -p out
-          cp build/app/outputs/flutter-apk/app-release.apk out/ || true
+          cp build/app/outputs/flutter-apk/app-release.apk out/
 
       - name: Deploy Android build
         run: |
           git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/garsau/NearMe-Android mobile-repo
           rm -rf mobile-repo/*
-          cp out/app-release.apk mobile-repo/ || true
+          cp out/app-release.apk mobile-repo/
           cd mobile-repo
-          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
           git add .
           git diff-index --quiet HEAD || git commit -m "Deploy Android build: $(date +'%Y-%m-%d %H:%M')"
           git push
