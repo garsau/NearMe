@@ -1,3 +1,4 @@
+import '/auth/supabase_auth/auth_util.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/bar/custom_profile_app_bar/custom_profile_app_bar_widget.dart';
@@ -52,6 +53,24 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
           .toList()
           .cast<PostViewStruct>();
       safeSetState(() {});
+      _model.follow = await FollowsTable().queryRows(
+        queryFn: (q) => q
+            .eqOrNull(
+              'follower_id',
+              currentUserUid,
+            )
+            .eqOrNull(
+              'followed_id',
+              widget.user?.id,
+            ),
+      );
+      if (_model.follow?.length == 0) {
+        _model.isFollowing = false;
+        safeSetState(() {});
+      } else {
+        _model.isFollowing = true;
+        safeSetState(() {});
+      }
     });
   }
 
@@ -326,9 +345,33 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
-                        context.pushNamed(EditProfileWidget.routeName);
+                        if (_model.isFollowing) {
+                          await FollowsTable().delete(
+                            matchingRows: (rows) => rows
+                                .eqOrNull(
+                                  'follower_id',
+                                  currentUserUid,
+                                )
+                                .eqOrNull(
+                                  'followed_id',
+                                  widget.user?.id,
+                                ),
+                          );
+                          _model.isFollowing = false;
+                          safeSetState(() {});
+                        } else {
+                          await FollowsTable().insert({
+                            'follower_id': currentUserUid,
+                            'followed_id': widget.user?.id,
+                          });
+                          _model.isFollowing = true;
+                          safeSetState(() {});
+                        }
                       },
-                      text: 'Follow',
+                      text: valueOrDefault<String>(
+                        _model.isFollowing ? 'Unfollow' : 'Follow',
+                        'Follow',
+                      ),
                       options: FFButtonOptions(
                         width: double.infinity,
                         height: 30.0,

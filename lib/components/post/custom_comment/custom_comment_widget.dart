@@ -1,4 +1,5 @@
 import '/backend/schema/structs/index.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -60,20 +61,22 @@ class _CustomCommentWidgetState extends State<CustomCommentWidget> {
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                        valueOrDefault<double>(
-                          widget.comment!.depth.toDouble() * 8.0,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          valueOrDefault<double>(
+                            widget.comment!.depth.toDouble() * 8.0,
+                            0.0,
+                          ),
                           0.0,
+                          0.0,
+                          0.0),
+                      child: Container(
+                        width: 1.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).alternate,
                         ),
-                        0.0,
-                        0.0,
-                        0.0),
-                    child: Container(
-                      width: 1.0,
-                      height: 100.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).alternate,
                       ),
                     ),
                   ),
@@ -91,17 +94,45 @@ class _CustomCommentWidgetState extends State<CustomCommentWidget> {
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Container(
-                                width: 32.0,
-                                height: 32.0,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  functions.getStringUrl(
-                                      widget.comment?.avatarUrl)!,
-                                  fit: BoxFit.cover,
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  _model.userProfile =
+                                      await ProfilesTable().queryRows(
+                                    queryFn: (q) => q.eqOrNull(
+                                      'id',
+                                      widget.comment?.authorId,
+                                    ),
+                                  );
+
+                                  context.pushNamed(
+                                    UserProfileWidget.routeName,
+                                    queryParameters: {
+                                      'user': serializeParam(
+                                        functions.mapRowsToProfile(
+                                            _model.userProfile!.toList()),
+                                        ParamType.DataStruct,
+                                      ),
+                                    }.withoutNulls,
+                                  );
+
+                                  safeSetState(() {});
+                                },
+                                child: Container(
+                                  width: 32.0,
+                                  height: 32.0,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.network(
+                                    functions.getStringUrl(
+                                        widget.comment?.avatarUrl)!,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ],
@@ -349,14 +380,13 @@ class _CustomCommentWidgetState extends State<CustomCommentWidget> {
             ],
           ),
         ),
-        if (widget.comment?.isLastInThread ?? true)
-          Container(
-            width: double.infinity,
-            height: 1.0,
-            decoration: BoxDecoration(
-              color: FlutterFlowTheme.of(context).alternate,
-            ),
+        Container(
+          width: double.infinity,
+          height: widget.comment!.isLastInThread ? 10.0 : 1.0,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).alternate,
           ),
+        ),
       ],
     );
   }

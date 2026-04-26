@@ -159,16 +159,18 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   }
                                 }
 
-                                await ProfilesTable().update(
-                                  data: {
-                                    'avatar_url':
-                                        _model.uploadedFileUrl_uploadAvatar,
-                                  },
-                                  matchingRows: (rows) => rows.eqOrNull(
-                                    'id',
-                                    currentUserUid,
-                                  ),
-                                );
+                                if (_model.uploadedFileUrl_uploadAvatar != '') {
+                                  await ProfilesTable().update(
+                                    data: {
+                                      'avatar_url':
+                                          _model.uploadedFileUrl_uploadAvatar,
+                                    },
+                                    matchingRows: (rows) => rows.eqOrNull(
+                                      'id',
+                                      currentUserUid,
+                                    ),
+                                  );
+                                }
                               },
                               child: Container(
                                 width: 80.0,

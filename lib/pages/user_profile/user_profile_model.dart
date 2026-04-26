@@ -19,10 +19,14 @@ class UserProfileModel extends FlutterFlowModel<UserProfileWidget> {
           int index, Function(PostViewStruct) updateFn) =>
       profilePosts[index] = updateFn(profilePosts[index]);
 
+  bool isFollowing = false;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - Query Rows] action in UserProfile widget.
   List<PostsWithAuthorsRow>? postsOutputLoad;
+  // Stores action output result for [Backend Call - Query Rows] action in UserProfile widget.
+  List<FollowsRow>? follow;
   // Model for CustomProfileAppBar component.
   late CustomProfileAppBarModel customProfileAppBarModel;
 
