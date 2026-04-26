@@ -16,7 +16,7 @@ jobs:
 
       - name: Validate manifest
         run: |
-          apt-get install -y libxml2-utils -q
+          sudo apt-get install -y libxml2-utils -q
           xmllint --noout android/app/src/main/AndroidManifest.xml && echo "Manifest OK"
 
       - name: Setup Java
