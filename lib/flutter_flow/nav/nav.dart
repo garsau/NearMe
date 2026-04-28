@@ -165,6 +165,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               structBuilder: ProfileStruct.fromSerializableMap,
             ),
           ),
+        ),
+        FFRoute(
+          name: FollowsWidget.routeName,
+          path: FollowsWidget.routePath,
+          builder: (context, params) => FollowsWidget(
+            isFollowers: params.getParam(
+              'isFollowers',
+              ParamType.bool,
+            ),
+            profileId: params.getParam(
+              'profileId',
+              ParamType.String,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

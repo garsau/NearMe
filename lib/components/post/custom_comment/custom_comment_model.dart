@@ -4,6 +4,10 @@ import 'custom_comment_widget.dart' show CustomCommentWidget;
 import 'package:flutter/material.dart';
 
 class CustomCommentModel extends FlutterFlowModel<CustomCommentWidget> {
+  ///  Local state fields for this component.
+
+  int? localVotes;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Query Rows] action in CircleImage widget.

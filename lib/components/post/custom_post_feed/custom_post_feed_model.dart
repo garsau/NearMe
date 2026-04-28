@@ -4,6 +4,10 @@ import 'custom_post_feed_widget.dart' show CustomPostFeedWidget;
 import 'package:flutter/material.dart';
 
 class CustomPostFeedModel extends FlutterFlowModel<CustomPostFeedWidget> {
+  ///  Local state fields for this component.
+
+  int? localVotes;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Query Rows] action in CircleImage widget.

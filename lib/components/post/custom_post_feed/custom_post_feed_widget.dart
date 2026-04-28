@@ -1,10 +1,13 @@
+import '/auth/supabase_auth/auth_util.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'custom_post_feed_model.dart';
@@ -35,6 +38,12 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => CustomPostFeedModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.localVotes = widget.postView?.votesScore;
+      safeSetState(() {});
+    });
   }
 
   @override
@@ -215,9 +224,29 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                await actions.votePost(
+                                  widget.postView!.id,
+                                  currentUserUid,
+                                  1,
+                                );
+                                _model.localVotes = _model.localVotes! + 1;
+                                safeSetState(() {});
+                              },
+                              child: FaIcon(
+                                FontAwesomeIcons.longArrowAltUp,
+                                color: FlutterFlowTheme.of(context).success,
+                                size: 16.0,
+                              ),
+                            ),
                             Text(
                               valueOrDefault<String>(
-                                widget.postView?.votesScore.toString(),
+                                _model.localVotes?.toString(),
                                 '0',
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -241,15 +270,25 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
                                         .fontStyle,
                                   ),
                             ),
-                            FaIcon(
-                              FontAwesomeIcons.longArrowAltUp,
-                              color: FlutterFlowTheme.of(context).success,
-                              size: 16.0,
-                            ),
-                            FaIcon(
-                              FontAwesomeIcons.longArrowAltDown,
-                              color: FlutterFlowTheme.of(context).error,
-                              size: 16.0,
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                await actions.votePost(
+                                  widget.postView!.id,
+                                  currentUserUid,
+                                  -1,
+                                );
+                                _model.localVotes = _model.localVotes! + -1;
+                                safeSetState(() {});
+                              },
+                              child: FaIcon(
+                                FontAwesomeIcons.longArrowAltDown,
+                                color: FlutterFlowTheme.of(context).error,
+                                size: 16.0,
+                              ),
                             ),
                           ].divide(SizedBox(width: 6.0)),
                         ),
