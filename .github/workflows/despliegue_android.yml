@@ -10,10 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inject Google Maps meta-data
-        run: |
-          sed -i 's|android:requestLegacyExternalStorage="true"|android:requestLegacyExternalStorage="true">\n        <meta-data android:name="com.google.android.geo.API_KEY" android:value="MAPS_API_KEY_PLACEHOLDER"/|' android/app/src/main/AndroidManifest.xml
-
       - name: Validate manifest
         run: |
           sudo apt-get install -y libxml2-utils -q
