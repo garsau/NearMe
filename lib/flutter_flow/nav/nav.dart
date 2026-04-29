@@ -179,6 +179,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.String,
             ),
           ),
+        ),
+        FFRoute(
+          name: DetailWidget.routeName,
+          path: DetailWidget.routePath,
+          builder: (context, params) => DetailWidget(
+            post: params.getParam(
+              'post',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: PostViewStruct.fromSerializableMap,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

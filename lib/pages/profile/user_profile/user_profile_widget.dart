@@ -154,6 +154,14 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                       ParamType.String,
                                     ),
                                   }.withoutNulls,
+                                  extra: <String, dynamic>{
+                                    '__transition_info__': TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType:
+                                          PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 200),
+                                    ),
+                                  },
                                 );
                               },
                               child: Column(
@@ -238,6 +246,14 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                       ParamType.String,
                                     ),
                                   }.withoutNulls,
+                                  extra: <String, dynamic>{
+                                    '__transition_info__': TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType:
+                                          PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 200),
+                                    ),
+                                  },
                                 );
                               },
                               child: Column(

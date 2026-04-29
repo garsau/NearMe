@@ -131,6 +131,14 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                       ParamType.String,
                                     ),
                                   }.withoutNulls,
+                                  extra: <String, dynamic>{
+                                    '__transition_info__': TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType:
+                                          PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 200),
+                                    ),
+                                  },
                                 );
                               },
                               child: Column(
@@ -218,6 +226,14 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                       ParamType.String,
                                     ),
                                   }.withoutNulls,
+                                  extra: <String, dynamic>{
+                                    '__transition_info__': TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType:
+                                          PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 200),
+                                    ),
+                                  },
                                 );
                               },
                               child: Column(
@@ -381,7 +397,16 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
-                        context.pushNamed(EditProfileWidget.routeName);
+                        context.pushNamed(
+                          EditProfileWidget.routeName,
+                          extra: <String, dynamic>{
+                            '__transition_info__': TransitionInfo(
+                              hasTransition: true,
+                              transitionType: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 200),
+                            ),
+                          },
+                        );
                       },
                       text: 'Edit',
                       options: FFButtonOptions(

@@ -155,13 +155,21 @@ class _FeedWidgetState extends State<FeedWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   context.pushNamed(
-                                    CommentsWidget.routeName,
+                                    DetailWidget.routeName,
                                     queryParameters: {
                                       'post': serializeParam(
                                         listPostsItem,
                                         ParamType.DataStruct,
                                       ),
                                     }.withoutNulls,
+                                    extra: <String, dynamic>{
+                                      '__transition_info__': TransitionInfo(
+                                        hasTransition: true,
+                                        transitionType:
+                                            PageTransitionType.bottomToTop,
+                                        duration: Duration(milliseconds: 200),
+                                      ),
+                                    },
                                   );
                                 },
                                 child: CustomPostFeedWidget(

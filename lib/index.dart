@@ -15,3 +15,4 @@ export '/pages/config/edit_profile/edit_profile_widget.dart'
 export '/pages/profile/user_profile/user_profile_widget.dart'
     show UserProfileWidget;
 export '/pages/profile/follows/follows_widget.dart' show FollowsWidget;
+export '/pages/home/detail/detail_widget.dart' show DetailWidget;

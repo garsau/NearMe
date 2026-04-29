@@ -99,7 +99,7 @@ class _CustomNavBarWidgetState extends State<CustomNavBarWidget> {
                           '__transition_info__': TransitionInfo(
                             hasTransition: true,
                             transitionType: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 150),
+                            duration: Duration(milliseconds: 200),
                           ),
                         },
                       );
