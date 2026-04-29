@@ -32,7 +32,7 @@ jobs:
 
       - name: Inject Google Maps API Key
         env:
-          MAPS_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPS_KEY: ${{ secrets.MAPS_API_KEY }}
         run: |
           sed -i "s/MAPS_API_KEY_PLACEHOLDER/$MAPS_KEY/g" android/app/src/main/AndroidManifest.xml
           if grep -q "MAPS_API_KEY_PLACEHOLDER" android/app/src/main/AndroidManifest.xml; then
