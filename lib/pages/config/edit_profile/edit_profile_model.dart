@@ -1,6 +1,7 @@
 import '/backend/supabase/supabase.dart';
 import '/components/bar/custom_profile_app_bar/custom_profile_app_bar_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'edit_profile_widget.dart' show EditProfileWidget;
 import 'package:flutter/material.dart';
 
