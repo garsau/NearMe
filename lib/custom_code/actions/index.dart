@@ -4,3 +4,6 @@ export 'create_comment.dart' show createComment;
 export 'get_followers.dart' show getFollowers;
 export 'get_following.dart' show getFollowing;
 export 'vote_post.dart' show votePost;
+export 'get_posts_by_recent.dart' show getPostsByRecent;
+export 'get_posts_by_distance.dart' show getPostsByDistance;
+export 'get_posts_for_map.dart' show getPostsForMap;

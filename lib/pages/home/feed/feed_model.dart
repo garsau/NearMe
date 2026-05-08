@@ -1,5 +1,4 @@
 import '/backend/schema/structs/index.dart';
-import '/backend/supabase/supabase.dart';
 import '/components/bar/custom_app_bar/custom_app_bar_widget.dart';
 import '/components/bar/custom_nav_bar/custom_nav_bar_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -19,14 +18,18 @@ class FeedModel extends FlutterFlowModel<FeedWidget> {
   void updateLocalPostsAtIndex(int index, Function(PostViewStruct) updateFn) =>
       localPosts[index] = updateFn(localPosts[index]);
 
+  int pageOffset = 0;
+
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - Query Rows] action in Feed widget.
-  List<PostsWithAuthorsRow>? postsOutputLoad;
+  // Stores action output result for [Custom Action - getPostsByRecent] action in Feed widget.
+  List<PostViewStruct>? postsOutputLoad;
   // Model for CustomAppBar component.
   late CustomAppBarModel customAppBarModel;
-  // Stores action output result for [Backend Call - Query Rows] action in ListView widget.
-  List<PostsWithAuthorsRow>? postOutputRefresh;
+  // Stores action output result for [Custom Action - getPostsByRecent] action in Column widget.
+  List<PostViewStruct>? postsOutputRefresh;
+  // Stores action output result for [Custom Action - getPostsByRecent] action in Button widget.
+  List<PostViewStruct>? postsOutputMore;
   // Model for CustomNavBar component.
   late CustomNavBarModel customNavBarModel;
 

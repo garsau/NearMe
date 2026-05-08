@@ -17,6 +17,8 @@ class PostViewStruct extends BaseStruct {
     String? username,
     String? avatarUrl,
     String? authorId,
+    double? distanceM,
+    int? userVote,
   })  : _id = id,
         _content = content,
         _isBottle = isBottle,
@@ -26,7 +28,9 @@ class PostViewStruct extends BaseStruct {
         _lng = lng,
         _username = username,
         _avatarUrl = avatarUrl,
-        _authorId = authorId;
+        _authorId = authorId,
+        _distanceM = distanceM,
+        _userVote = userVote;
 
   // "id" field.
   String? _id;
@@ -104,6 +108,24 @@ class PostViewStruct extends BaseStruct {
 
   bool hasAuthorId() => _authorId != null;
 
+  // "distance_m" field.
+  double? _distanceM;
+  double get distanceM => _distanceM ?? 0.0;
+  set distanceM(double? val) => _distanceM = val;
+
+  void incrementDistanceM(double amount) => distanceM = distanceM + amount;
+
+  bool hasDistanceM() => _distanceM != null;
+
+  // "user_vote" field.
+  int? _userVote;
+  int get userVote => _userVote ?? 0;
+  set userVote(int? val) => _userVote = val;
+
+  void incrementUserVote(int amount) => userVote = userVote + amount;
+
+  bool hasUserVote() => _userVote != null;
+
   static PostViewStruct fromMap(Map<String, dynamic> data) => PostViewStruct(
         id: data['id'] as String?,
         content: data['content'] as String?,
@@ -115,6 +137,8 @@ class PostViewStruct extends BaseStruct {
         username: data['username'] as String?,
         avatarUrl: data['avatar_url'] as String?,
         authorId: data['author_id'] as String?,
+        distanceM: castToType<double>(data['distance_m']),
+        userVote: castToType<int>(data['user_vote']),
       );
 
   static PostViewStruct? maybeFromMap(dynamic data) =>
@@ -131,6 +155,8 @@ class PostViewStruct extends BaseStruct {
         'username': _username,
         'avatar_url': _avatarUrl,
         'author_id': _authorId,
+        'distance_m': _distanceM,
+        'user_vote': _userVote,
       }.withoutNulls;
 
   @override
@@ -174,6 +200,14 @@ class PostViewStruct extends BaseStruct {
         'author_id': serializeParam(
           _authorId,
           ParamType.String,
+        ),
+        'distance_m': serializeParam(
+          _distanceM,
+          ParamType.double,
+        ),
+        'user_vote': serializeParam(
+          _userVote,
+          ParamType.int,
         ),
       }.withoutNulls;
 
@@ -229,6 +263,16 @@ class PostViewStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        distanceM: deserializeParam(
+          data['distance_m'],
+          ParamType.double,
+          false,
+        ),
+        userVote: deserializeParam(
+          data['user_vote'],
+          ParamType.int,
+          false,
+        ),
       );
 
   @override
@@ -246,7 +290,9 @@ class PostViewStruct extends BaseStruct {
         lng == other.lng &&
         username == other.username &&
         avatarUrl == other.avatarUrl &&
-        authorId == other.authorId;
+        authorId == other.authorId &&
+        distanceM == other.distanceM &&
+        userVote == other.userVote;
   }
 
   @override
@@ -260,7 +306,9 @@ class PostViewStruct extends BaseStruct {
         lng,
         username,
         avatarUrl,
-        authorId
+        authorId,
+        distanceM,
+        userVote
       ]);
 }
 
@@ -275,6 +323,8 @@ PostViewStruct createPostViewStruct({
   String? username,
   String? avatarUrl,
   String? authorId,
+  double? distanceM,
+  int? userVote,
 }) =>
     PostViewStruct(
       id: id,
@@ -287,4 +337,6 @@ PostViewStruct createPostViewStruct({
       username: username,
       avatarUrl: avatarUrl,
       authorId: authorId,
+      distanceM: distanceM,
+      userVote: userVote,
     );

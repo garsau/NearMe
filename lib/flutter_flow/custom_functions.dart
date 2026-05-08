@@ -48,3 +48,10 @@ ProfileStruct mapRowsToProfile(List<ProfilesRow> row) {
 String? getStringUrl(String? stringUrl) {
   return stringUrl;
 }
+
+List<PostViewStruct> appendPosts(
+  List<PostViewStruct> currentPosts,
+  List<PostViewStruct> newPosts,
+) {
+  return [...currentPosts, ...newPosts];
+}
