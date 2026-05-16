@@ -1,11 +1,15 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'new_post_model.dart';
 export 'new_post_model.dart';
 
@@ -45,6 +49,7 @@ class _NewPostWidgetState extends State<NewPostWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
     if (currentUserLocationValue == null) {
       return Container(
         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -97,13 +102,46 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
-                        await actions.createPostRPC(
-                          currentUserUid,
-                          _model.textController.text,
-                          _model.selectedLocation!,
-                          false,
-                        );
-                        context.safePop();
+                        currentUserLocationValue = await getCurrentUserLocation(
+                            defaultLocation: LatLng(0.0, 0.0));
+                        if (_model.selectedLocation == null) {
+                          _model.errorMsg =
+                              'Please select a location on the map';
+                          safeSetState(() {});
+                        } else if (!functions.isWithinRadius(
+                            _model.selectedLocation!,
+                            currentUserLocationValue!,
+                            10000)) {
+                          _model.errorMsg = 'Location must be within your area';
+                          safeSetState(() {});
+                        } else if (_model.textController.text == '') {
+                          _model.errorMsg = 'Message cannot be empty';
+                          safeSetState(() {});
+                        } else {
+                          await actions.createPostRPC(
+                            currentUserUid,
+                            _model.textController.text,
+                            _model.selectedLocation!,
+                            false,
+                          );
+                          FFAppState().feedOffset = 0;
+                          safeSetState(() {});
+                          _model.postsOutputRefresh =
+                              await actions.getPostsByRecent(
+                            currentUserLocationValue!,
+                            currentUserUid,
+                            10000,
+                            FFAppState().feedOffset,
+                          );
+                          FFAppState().localPostsFeed = _model
+                              .postsOutputRefresh!
+                              .toList()
+                              .cast<PostViewStruct>();
+                          safeSetState(() {});
+                          context.safePop();
+                        }
+
+                        safeSetState(() {});
                       },
                       text: 'post',
                       options: FFButtonOptions(
@@ -234,12 +272,38 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                         ),
                     maxLines: 8,
+                    maxLength: 140,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     cursorColor: FlutterFlowTheme.of(context).primaryText,
                     enableInteractiveSelection: true,
                     validator:
                         _model.textControllerValidator.asValidator(context),
                   ),
                 ),
+                if (_model.errorMsg != null && _model.errorMsg != '')
+                  Text(
+                    valueOrDefault<String>(
+                      _model.errorMsg,
+                      'default',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          font: GoogleFonts.poppins(
+                            fontWeight: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .fontWeight,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .fontStyle,
+                          ),
+                          color: FlutterFlowTheme.of(context).error,
+                          letterSpacing: 0.0,
+                          fontWeight: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .fontWeight,
+                          fontStyle:
+                              FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                        ),
+                  ),
                 Container(
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.4,

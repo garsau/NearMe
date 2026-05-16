@@ -12,6 +12,7 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'feed_model.dart';
 export 'feed_model.dart';
 
@@ -40,15 +41,19 @@ class _FeedWidgetState extends State<FeedWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       currentUserLocationValue =
           await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
-      _model.postsOutputLoad = await actions.getPostsByRecent(
-        currentUserLocationValue!,
-        currentUserUid,
-        10000,
-        0,
-      );
-      _model.localPosts =
-          _model.postsOutputLoad!.toList().cast<PostViewStruct>();
-      safeSetState(() {});
+      if (FFAppState().localPostsFeed.length == 0) {
+        FFAppState().feedOffset = 0;
+        safeSetState(() {});
+        _model.postsOutputLoad = await actions.getPostsByRecent(
+          currentUserLocationValue!,
+          currentUserUid,
+          10000,
+          FFAppState().feedOffset,
+        );
+        FFAppState().localPostsFeed =
+            _model.postsOutputLoad!.toList().cast<PostViewStruct>();
+        safeSetState(() {});
+      }
     });
   }
 
@@ -61,6 +66,8 @@ class _FeedWidgetState extends State<FeedWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -96,7 +103,10 @@ class _FeedWidgetState extends State<FeedWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Sant Joan d\'Alacant',
+                                  valueOrDefault<String>(
+                                    FFAppState().cityName,
+                                    'Muchamiel',
+                                  ),
                                   style: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
@@ -137,6 +147,8 @@ class _FeedWidgetState extends State<FeedWidget> {
                       onRefresh: () async {
                         currentUserLocationValue = await getCurrentUserLocation(
                             defaultLocation: LatLng(0.0, 0.0));
+                        FFAppState().feedOffset = 0;
+                        safeSetState(() {});
                         _model.postsOutputRefresh =
                             await actions.getPostsByRecent(
                           currentUserLocationValue!,
@@ -144,7 +156,7 @@ class _FeedWidgetState extends State<FeedWidget> {
                           10000,
                           0,
                         );
-                        _model.localPosts = _model.postsOutputRefresh!
+                        FFAppState().localPostsFeed = _model.postsOutputRefresh!
                             .toList()
                             .cast<PostViewStruct>();
                         safeSetState(() {});
@@ -156,7 +168,8 @@ class _FeedWidgetState extends State<FeedWidget> {
                           children: [
                             Builder(
                               builder: (context) {
-                                final listPosts = _model.localPosts.toList();
+                                final listPosts =
+                                    FFAppState().localPostsFeed.toList();
 
                                 return ListView.builder(
                                   padding: EdgeInsets.fromLTRB(
@@ -216,17 +229,19 @@ class _FeedWidgetState extends State<FeedWidget> {
                                   currentUserLocationValue =
                                       await getCurrentUserLocation(
                                           defaultLocation: LatLng(0.0, 0.0));
-                                  _model.pageOffset = _model.pageOffset + 20;
+                                  FFAppState().feedOffset =
+                                      FFAppState().feedOffset + 20;
                                   safeSetState(() {});
                                   _model.postsOutputMore =
                                       await actions.getPostsByRecent(
                                     currentUserLocationValue!,
                                     currentUserUid,
                                     10000,
-                                    _model.pageOffset,
+                                    FFAppState().feedOffset,
                                   );
-                                  _model.localPosts = functions
-                                      .appendPosts(_model.localPosts.toList(),
+                                  FFAppState().localPostsFeed = functions
+                                      .appendPosts(
+                                          FFAppState().localPostsFeed.toList(),
                                           _model.postsOutputMore!.toList())
                                       .toList()
                                       .cast<PostViewStruct>();

@@ -18,8 +18,6 @@ class FeedModel extends FlutterFlowModel<FeedWidget> {
   void updateLocalPostsAtIndex(int index, Function(PostViewStruct) updateFn) =>
       localPosts[index] = updateFn(localPosts[index]);
 
-  int pageOffset = 0;
-
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Custom Action - getPostsByRecent] action in Feed widget.

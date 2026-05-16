@@ -47,6 +47,7 @@ class PostsMap extends StatefulWidget {
 class _PostsMapState extends State<PostsMap> {
   gmaps.GoogleMapController? _controller;
   final Map<gmaps.MarkerId, gmaps.Marker> _markers = {};
+  String? _selectedPostId;
 
   @override
   void initState() {
@@ -95,11 +96,13 @@ class _PostsMapState extends State<PostsMap> {
   }
 
   Future<gmaps.BitmapDescriptor> _buildMarkerIcon(PostViewStruct post) async {
+    final isSelected = post.id == _selectedPostId;
     const double size = 44.0;
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
 
+    // sombra
     final shadowPaint = Paint()
       ..color = Colors.black.withOpacity(0.2)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
@@ -109,6 +112,7 @@ class _PostsMapState extends State<PostsMap> {
       shadowPaint,
     );
 
+    // fondo
     final bgPaint = Paint()..color = Colors.white;
     canvas.drawCircle(
       const Offset(size / 2, size / 2),
@@ -116,6 +120,7 @@ class _PostsMapState extends State<PostsMap> {
       bgPaint,
     );
 
+    // borde interior
     final borderPaint = Paint()
       ..color = Colors.black.withOpacity(0.12)
       ..style = PaintingStyle.stroke
@@ -125,6 +130,19 @@ class _PostsMapState extends State<PostsMap> {
       size / 2 - 2,
       borderPaint,
     );
+
+    // aro blanco exterior si está seleccionado
+    if (isSelected) {
+      final selectedPaint = Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.0;
+      canvas.drawCircle(
+        const Offset(size / 2, size / 2),
+        size / 2,
+        selectedPaint,
+      );
+    }
 
     if (post.avatarUrl != null && post.avatarUrl!.isNotEmpty) {
       try {
@@ -206,6 +224,10 @@ class _PostsMapState extends State<PostsMap> {
   }
 
   void _onMarkerTap(PostViewStruct post) async {
+    setState(() {
+      _selectedPostId = post.id;
+    });
+    _buildMarkers();
     if (widget.onPostSelected != null) {
       await widget.onPostSelected!(post);
     }
@@ -228,6 +250,15 @@ class _PostsMapState extends State<PostsMap> {
             target: center,
             zoom: _getZoomForRadius(widget.radiusMeters),
           ),
+          onTap: (point) async {
+            setState(() {
+              _selectedPostId = null;
+            });
+            _buildMarkers();
+            if (widget.onPostSelected != null) {
+              await widget.onPostSelected!(null);
+            }
+          },
           markers: Set<gmaps.Marker>.of(_markers.values),
           circles: _buildRadiusCircle(center, widget.radiusMeters),
           onMapCreated: (c) => _controller = c,

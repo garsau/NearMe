@@ -17,6 +17,19 @@ class FollowsModel extends FlutterFlowModel<FollowsWidget> {
           int index, Function(FollowUserStruct) updateFn) =>
       followList[index] = updateFn(followList[index]);
 
+  List<FollowUserStruct> followListFiltered = [];
+  void addToFollowListFiltered(FollowUserStruct item) =>
+      followListFiltered.add(item);
+  void removeFromFollowListFiltered(FollowUserStruct item) =>
+      followListFiltered.remove(item);
+  void removeAtIndexFromFollowListFiltered(int index) =>
+      followListFiltered.removeAt(index);
+  void insertAtIndexInFollowListFiltered(int index, FollowUserStruct item) =>
+      followListFiltered.insert(index, item);
+  void updateFollowListFilteredAtIndex(
+          int index, Function(FollowUserStruct) updateFn) =>
+      followListFiltered[index] = updateFn(followListFiltered[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Custom Action - getFollowers] action in Follows widget.

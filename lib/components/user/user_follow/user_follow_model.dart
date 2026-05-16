@@ -3,6 +3,10 @@ import 'user_follow_widget.dart' show UserFollowWidget;
 import 'package:flutter/material.dart';
 
 class UserFollowModel extends FlutterFlowModel<UserFollowWidget> {
+  ///  Local state fields for this component.
+
+  bool isFollowingComponent = false;
+
   @override
   void initState(BuildContext context) {}
 

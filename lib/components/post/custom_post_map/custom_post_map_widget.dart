@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'custom_post_feed_model.dart';
-export 'custom_post_feed_model.dart';
+import 'custom_post_map_model.dart';
+export 'custom_post_map_model.dart';
 
-class CustomPostFeedWidget extends StatefulWidget {
-  const CustomPostFeedWidget({
+class CustomPostMapWidget extends StatefulWidget {
+  const CustomPostMapWidget({
     super.key,
     required this.postView,
   });
@@ -22,11 +22,11 @@ class CustomPostFeedWidget extends StatefulWidget {
   final PostViewStruct? postView;
 
   @override
-  State<CustomPostFeedWidget> createState() => _CustomPostFeedWidgetState();
+  State<CustomPostMapWidget> createState() => _CustomPostMapWidgetState();
 }
 
-class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
-  late CustomPostFeedModel _model;
+class _CustomPostMapWidgetState extends State<CustomPostMapWidget> {
+  late CustomPostMapModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -37,7 +37,7 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => CustomPostFeedModel());
+    _model = createModel(context, () => CustomPostMapModel());
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -62,7 +62,7 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
           width: double.infinity,
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).secondaryBackground,
-            borderRadius: BorderRadius.circular(0.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: Padding(
             padding: EdgeInsets.all(8.0),
@@ -561,13 +561,6 @@ class _CustomPostFeedWidgetState extends State<CustomPostFeedWidget> {
                 ),
               ].divide(SizedBox(height: 8.0)),
             ),
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          height: 1.0,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).alternate,
           ),
         ),
       ],

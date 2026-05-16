@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class CustomPostFeedModel extends FlutterFlowModel<CustomPostFeedWidget> {
   ///  Local state fields for this component.
 
-  int? localVotes;
+  int componentVotes = 0;
 
   ///  State fields for stateful widgets in this component.
 

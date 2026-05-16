@@ -44,7 +44,7 @@ class _ExpandedCustomPostFeedWidgetState
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.localVotes = widget.postView?.votesScore;
+      _model.componentVotes = widget.postView?.votesScore;
       safeSetState(() {});
     });
   }
@@ -74,6 +74,7 @@ class _ExpandedCustomPostFeedWidgetState
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       mainAxisSize: MainAxisSize.max,
@@ -84,24 +85,28 @@ class _ExpandedCustomPostFeedWidgetState
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onTap: () async {
-                            _model.userProfile =
-                                await ProfilesTable().queryRows(
-                              queryFn: (q) => q.eqOrNull(
-                                'id',
-                                widget.postView?.authorId,
-                              ),
-                            );
-
-                            context.pushNamed(
-                              UserProfileWidget.routeName,
-                              queryParameters: {
-                                'user': serializeParam(
-                                  functions.mapRowsToProfile(
-                                      _model.userProfile!.toList()),
-                                  ParamType.DataStruct,
+                            if (widget.postView?.authorId == currentUserUid) {
+                              context.pushNamed(MyProfileWidget.routeName);
+                            } else {
+                              _model.userProfile =
+                                  await ProfilesTable().queryRows(
+                                queryFn: (q) => q.eqOrNull(
+                                  'id',
+                                  widget.postView?.authorId,
                                 ),
-                              }.withoutNulls,
-                            );
+                              );
+
+                              context.pushNamed(
+                                UserProfileWidget.routeName,
+                                queryParameters: {
+                                  'user': serializeParam(
+                                    functions.mapRowsToProfile(
+                                        _model.userProfile!.toList()),
+                                    ParamType.DataStruct,
+                                  ),
+                                }.withoutNulls,
+                              );
+                            }
 
                             safeSetState(() {});
                           },
@@ -128,6 +133,7 @@ class _ExpandedCustomPostFeedWidgetState
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 '@',
@@ -206,161 +212,368 @@ class _ExpandedCustomPostFeedWidgetState
                         ],
                       ),
                     ),
+                    if (widget.postView?.authorId == currentUserUid)
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          await PostsTable().update(
+                            data: {
+                              'deleted_at':
+                                  supaSerialize<DateTime>(getCurrentTimestamp),
+                            },
+                            matchingRows: (rows) => rows.eqOrNull(
+                              'id',
+                              widget.postView?.id,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 30.0,
+                          height: 30.0,
+                          decoration: BoxDecoration(),
+                          child: Align(
+                            alignment: AlignmentDirectional(1.0, -1.0),
+                            child: Icon(
+                              Icons.delete_forever_rounded,
+                              color: FlutterFlowTheme.of(context).error,
+                              size: 24.0,
+                            ),
+                          ),
+                        ),
+                      ),
                   ].divide(SizedBox(width: 8.0)),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).primaryBackground,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                await actions.votePost(
-                                  widget.postView!.id,
-                                  currentUserUid,
-                                  1,
-                                );
-                                _model.localVotes = _model.localVotes! + 1;
-                                safeSetState(() {});
-                              },
-                              child: FaIcon(
-                                FontAwesomeIcons.longArrowAltUp,
-                                color: FlutterFlowTheme.of(context).success,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              valueOrDefault<String>(
-                                _model.localVotes?.toString(),
-                                '0',
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          valueOrDefault<String>(
+                            functions
+                                .formatDistance(widget.postView!.distanceM),
+                            '0',
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).labelSmall.override(
                                     font: GoogleFonts.poppins(
                                       fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
+                                          .labelSmall
                                           .fontWeight,
                                       fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
+                                          .labelSmall
                                           .fontStyle,
                                     ),
-                                    fontSize: 14.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .labelSmall
                                         .fontWeight,
                                     fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .labelSmall
                                         .fontStyle,
                                   ),
-                            ),
-                            InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                await actions.votePost(
-                                  widget.postView!.id,
-                                  currentUserUid,
-                                  -1,
-                                );
-                                _model.localVotes = _model.localVotes! + -1;
-                                safeSetState(() {});
-                              },
-                              child: FaIcon(
-                                FontAwesomeIcons.longArrowAltDown,
-                                color: FlutterFlowTheme.of(context).error,
-                                size: 16.0,
-                              ),
-                            ),
-                          ].divide(SizedBox(width: 6.0)),
                         ),
-                      ),
-                    ),
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        context.pushNamed(
-                          NewCommentWidget.routeName,
-                          queryParameters: {
-                            'postId': serializeParam(
-                              widget.postView?.id,
-                              ParamType.String,
-                            ),
-                          }.withoutNulls,
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24.0),
-                          border: Border.all(
-                            color:
-                                FlutterFlowTheme.of(context).primaryBackground,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 0.0, 8.0, 0.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.solidCommentDots,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 16.0,
-                              ),
-                              Text(
-                                ' . . .',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      font: GoogleFonts.poppins(
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      letterSpacing: 0.0,
+                        Text(
+                          ' / ',
+                          style:
+                              FlutterFlowTheme.of(context).labelSmall.override(
+                                    font: GoogleFonts.poppins(
                                       fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyMedium
+                                          .labelSmall
                                           .fontWeight,
                                       fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
+                                          .labelSmall
                                           .fontStyle,
                                     ),
-                              ),
-                            ],
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontStyle,
+                                  ),
+                        ),
+                        Text(
+                          valueOrDefault<String>(
+                            functions.formatTime(widget.postView!.createdAt!),
+                            'just now',
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).labelSmall.override(
+                                    font: GoogleFonts.poppins(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontStyle,
+                                  ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                8.0, 0.0, 8.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    await actions.votePost(
+                                      widget.postView!.id,
+                                      currentUserUid,
+                                      1,
+                                    );
+                                    if (_model.componentVotes == 1) {
+                                      _model.componentVotes = 0;
+                                      safeSetState(() {});
+                                    } else {
+                                      _model.componentVotes = 1;
+                                      safeSetState(() {});
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(),
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Builder(
+                                        builder: (context) {
+                                          if (_model.componentVotes == 1) {
+                                            return FaIcon(
+                                              FontAwesomeIcons.longArrowAltUp,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .success,
+                                              size: 16.0,
+                                            );
+                                          } else {
+                                            return Align(
+                                              alignment: AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              child: FaIcon(
+                                                FontAwesomeIcons.longArrowAltUp,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                size: 16.0,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    await actions.votePost(
+                                      widget.postView!.id,
+                                      currentUserUid,
+                                      -1,
+                                    );
+                                    if (_model.componentVotes == -1) {
+                                      _model.componentVotes = 0;
+                                      safeSetState(() {});
+                                    } else {
+                                      _model.componentVotes = -1;
+                                      safeSetState(() {});
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(),
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Builder(
+                                        builder: (context) {
+                                          if (_model.componentVotes == -1) {
+                                            return FaIcon(
+                                              FontAwesomeIcons.longArrowAltDown,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              size: 16.0,
+                                            );
+                                          } else {
+                                            return Align(
+                                              alignment: AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              child: FaIcon(
+                                                FontAwesomeIcons
+                                                    .longArrowAltDown,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                size: 16.0,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 30.0,
+                                  height: 30.0,
+                                  decoration: BoxDecoration(),
+                                  child: Align(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Text(
+                                      valueOrDefault<String>(
+                                        widget.postView?.votesScore
+                                            .toString(),
+                                        '0',
+                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            font: GoogleFonts.poppins(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            context.pushNamed(
+                              NewCommentWidget.routeName,
+                              queryParameters: {
+                                'postId': serializeParam(
+                                  widget.postView?.id,
+                                  ParamType.String,
+                                ),
+                              }.withoutNulls,
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24.0),
+                              border: Border.all(
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  8.0, 0.0, 8.0, 0.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(),
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.solidCommentDots,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        size: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    ' . . .',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          font: GoogleFonts.poppins(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontStyle,
+                                          ),
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ].divide(SizedBox(width: 4.0)),
                     ),
                   ].divide(SizedBox(width: 4.0)),
                 ),

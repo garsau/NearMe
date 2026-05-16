@@ -467,7 +467,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                           highlightColor: Colors.transparent,
                           onTap: () async {
                             context.pushNamed(
-                              CommentsWidget.routeName,
+                              DetailWidget.routeName,
                               queryParameters: {
                                 'post': serializeParam(
                                   listPostsItem,

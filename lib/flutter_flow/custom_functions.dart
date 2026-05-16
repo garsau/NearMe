@@ -55,3 +55,45 @@ List<PostViewStruct> appendPosts(
 ) {
   return [...currentPosts, ...newPosts];
 }
+
+bool isWithinRadius(
+  LatLng selectedLocation,
+  LatLng userLocation,
+  int radiusMeters,
+) {
+  final dLat = (selectedLocation.latitude - userLocation.latitude) * 111320;
+  final dLng = (selectedLocation.longitude - userLocation.longitude) * 111320;
+  final distanceSquared = dLat * dLat + dLng * dLng;
+  return distanceSquared <= (radiusMeters * radiusMeters);
+}
+
+String formatDistance(double distanceM) {
+  if (distanceM < 1000) {
+    return '${distanceM.round()}m';
+  } else {
+    final km = distanceM / 1000;
+    return '${km.toStringAsFixed(1)}km';
+  }
+}
+
+String formatTime(DateTime createdAt) {
+  final now = DateTime.now();
+  final diff = now.difference(createdAt);
+
+  if (diff.inMinutes < 1) return 'just now';
+  if (diff.inMinutes < 60) return '${diff.inMinutes}m';
+  if (diff.inHours < 24) return '${diff.inHours}h';
+  if (diff.inDays < 7) return '${diff.inDays}d';
+  return '${(diff.inDays / 7).floor()}w';
+}
+
+List<FollowUserStruct> filterProfiles(
+  List<FollowUserStruct> profiles,
+  String query,
+) {
+  if (query.isEmpty) return profiles;
+  final q = query.toLowerCase();
+  return profiles
+      .where((p) => p.username?.toLowerCase().contains(q) == true)
+      .toList();
+}

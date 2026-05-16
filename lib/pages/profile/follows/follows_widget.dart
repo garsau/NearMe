@@ -5,6 +5,8 @@ import '/components/user/user_follow/user_follow_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,12 +51,18 @@ class _FollowsWidgetState extends State<FollowsWidget> {
         _model.followList =
             _model.followersOutput!.toList().cast<FollowUserStruct>();
         safeSetState(() {});
+        _model.followListFiltered =
+            _model.followersOutput!.toList().cast<FollowUserStruct>();
+        safeSetState(() {});
       } else {
         _model.followingOutput = await actions.getFollowing(
           widget.profileId!,
           currentUserUid,
         );
         _model.followList =
+            _model.followingOutput!.toList().cast<FollowUserStruct>();
+        safeSetState(() {});
+        _model.followListFiltered =
             _model.followingOutput!.toList().cast<FollowUserStruct>();
         safeSetState(() {});
       }
@@ -86,7 +94,7 @@ class _FollowsWidgetState extends State<FollowsWidget> {
         body: SafeArea(
           top: true,
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
               wrapWithModel(
                 model: _model.customProfileAppBarModel,
@@ -102,6 +110,18 @@ class _FollowsWidgetState extends State<FollowsWidget> {
                   child: TextFormField(
                     controller: _model.textController,
                     focusNode: _model.textFieldFocusNode,
+                    onChanged: (_) => EasyDebounce.debounce(
+                      '_model.textController',
+                      Duration(milliseconds: 100),
+                      () async {
+                        _model.followListFiltered = functions
+                            .filterProfiles(_model.followList.toList(),
+                                _model.textController.text)
+                            .toList()
+                            .cast<FollowUserStruct>();
+                        safeSetState(() {});
+                      },
+                    ),
                     autofocus: false,
                     enabled: true,
                     obscureText: false,
@@ -125,7 +145,7 @@ class _FollowsWidgetState extends State<FollowsWidget> {
                                     .labelMedium
                                     .fontStyle,
                               ),
-                      hintText: ' Buscar',
+                      hintText: 'Buscar',
                       hintStyle:
                           FlutterFlowTheme.of(context).labelMedium.override(
                                 font: GoogleFonts.poppins(
@@ -200,7 +220,7 @@ class _FollowsWidgetState extends State<FollowsWidget> {
               ),
               Builder(
                 builder: (context) {
-                  final followListView = _model.followList.toList();
+                  final followListView = _model.followListFiltered.toList();
 
                   return ListView.builder(
                     padding: EdgeInsets.zero,

@@ -431,8 +431,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       iconPadding:
                                           EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
                                       textStyle: FlutterFlowTheme.of(context)
                                           .titleSmall
                                           .override(
@@ -446,7 +446,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                       .titleSmall
                                                       .fontStyle,
                                             ),
-                                            color: Colors.white,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
                                             letterSpacing: 0.0,
                                             fontWeight:
                                                 FlutterFlowTheme.of(context)
@@ -457,12 +458,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                     .titleSmall
                                                     .fontStyle,
                                           ),
-                                      elevation: 3.0,
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
                                         width: 1.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(12.0),
+                                      borderRadius: BorderRadius.circular(24.0),
                                     ),
                                   ),
                                 ),

@@ -1,3 +1,4 @@
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'new_comment_widget.dart' show NewCommentWidget;
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ class NewCommentModel extends FlutterFlowModel<NewCommentWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Custom Action - getCommentThreads] action in Button widget.
+  List<CommentStruct>? commentsOutput;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;

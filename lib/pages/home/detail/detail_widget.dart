@@ -1,3 +1,4 @@
+import '/auth/supabase_auth/auth_util.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/post/custom_comment/custom_comment_widget.dart';
 import '/components/post/expanded_custom_post_feed/expanded_custom_post_feed_widget.dart';
@@ -6,6 +7,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'detail_model.dart';
 export 'detail_model.dart';
 
@@ -38,9 +40,9 @@ class _DetailWidgetState extends State<DetailWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.commentsOutput = await actions.getCommentThreads(
         widget.post!.id,
-        widget.post!.authorId,
+        currentUserUid,
       );
-      _model.localComments =
+      FFAppState().localCommentsFeed =
           _model.commentsOutput!.toList().cast<CommentStruct>();
       safeSetState(() {});
     });
@@ -55,6 +57,8 @@ class _DetailWidgetState extends State<DetailWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -103,7 +107,8 @@ class _DetailWidgetState extends State<DetailWidget> {
                   Expanded(
                     child: Builder(
                       builder: (context) {
-                        final listComments = _model.localComments.toList();
+                        final listComments =
+                            FFAppState().localCommentsFeed.toList();
 
                         return ListView.builder(
                           padding: EdgeInsets.fromLTRB(

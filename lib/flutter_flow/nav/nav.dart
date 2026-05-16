@@ -119,18 +119,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => NewPostWidget(),
         ),
         FFRoute(
-          name: CommentsWidget.routeName,
-          path: CommentsWidget.routePath,
-          builder: (context, params) => CommentsWidget(
-            post: params.getParam(
-              'post',
-              ParamType.DataStruct,
-              isList: false,
-              structBuilder: PostViewStruct.fromSerializableMap,
-            ),
-          ),
-        ),
-        FFRoute(
           name: NewCommentWidget.routeName,
           path: NewCommentWidget.routePath,
           builder: (context, params) => NewCommentWidget(

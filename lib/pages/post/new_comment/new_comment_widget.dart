@@ -1,9 +1,11 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'new_comment_model.dart';
 export 'new_comment_model.dart';
@@ -89,7 +91,17 @@ class _NewCommentWidgetState extends State<NewCommentWidget> {
                           _model.textController.text,
                           widget.parentCommentId,
                         );
+                        _model.commentsOutput = await actions.getCommentThreads(
+                          widget.postId!,
+                          currentUserUid,
+                        );
+                        FFAppState().localCommentsFeed = _model.commentsOutput!
+                            .toList()
+                            .cast<CommentStruct>();
+                        safeSetState(() {});
                         context.safePop();
+
+                        safeSetState(() {});
                       },
                       text: 'comment',
                       options: FFButtonOptions(
@@ -220,6 +232,8 @@ class _NewCommentWidgetState extends State<NewCommentWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                         ),
                     maxLines: 8,
+                    maxLength: 140,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     cursorColor: FlutterFlowTheme.of(context).primaryText,
                     enableInteractiveSelection: true,
                     validator:

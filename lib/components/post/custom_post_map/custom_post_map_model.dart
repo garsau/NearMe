@@ -1,14 +1,12 @@
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'expanded_custom_post_feed_widget.dart'
-    show ExpandedCustomPostFeedWidget;
+import 'custom_post_map_widget.dart' show CustomPostMapWidget;
 import 'package:flutter/material.dart';
 
-class ExpandedCustomPostFeedModel
-    extends FlutterFlowModel<ExpandedCustomPostFeedWidget> {
+class CustomPostMapModel extends FlutterFlowModel<CustomPostMapWidget> {
   ///  Local state fields for this component.
 
-  int? componentVotes;
+  int componentVotes = 0;
 
   ///  State fields for stateful widgets in this component.
 

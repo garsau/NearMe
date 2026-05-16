@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class CustomCommentModel extends FlutterFlowModel<CustomCommentWidget> {
   ///  Local state fields for this component.
 
-  int? localVotes;
+  int? componentVotes;
 
   ///  State fields for stateful widgets in this component.
 

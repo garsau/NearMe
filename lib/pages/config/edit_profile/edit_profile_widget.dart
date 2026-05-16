@@ -9,6 +9,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'edit_profile_model.dart';
@@ -171,6 +172,12 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                       currentUserUid,
                                     ),
                                   );
+                                  FFAppState().updateUserProfileStruct(
+                                    (e) => e
+                                      ..avatarUrl =
+                                          _model.uploadedFileUrl_uploadAvatar,
+                                  );
+                                  safeSetState(() {});
                                 }
                               },
                               child: Container(
@@ -295,6 +302,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           enableInteractiveSelection: true,
                           validator: _model.textController1Validator
                               .asValidator(context),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp('^\\S+\$'))
+                          ],
                         ),
                       ),
                       Container(
@@ -397,6 +407,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                         .fontStyle,
                                   ),
                           maxLines: 6,
+                          maxLength: 140,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           cursorColor: FlutterFlowTheme.of(context).primaryText,
                           enableInteractiveSelection: true,
                           validator: _model.textController2Validator
