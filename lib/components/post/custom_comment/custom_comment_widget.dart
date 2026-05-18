@@ -264,21 +264,52 @@ class _CustomCommentWidgetState extends State<CustomCommentWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                await CommentsTable().update(
-                                  data: {
-                                    'deleted_at': supaSerialize<DateTime>(
-                                        getCurrentTimestamp),
-                                  },
-                                  matchingRows: (rows) => rows
-                                      .eqOrNull(
-                                        'id',
-                                        widget.comment?.id,
-                                      )
-                                      .eqOrNull(
-                                        'user_id',
-                                        currentUserUid,
-                                      ),
-                                );
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Delete comment?'),
+                                              content: Text(
+                                                  'It will be removed from the post.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  await CommentsTable().update(
+                                    data: {
+                                      'deleted_at': supaSerialize<DateTime>(
+                                          getCurrentTimestamp),
+                                    },
+                                    matchingRows: (rows) => rows
+                                        .eqOrNull(
+                                          'id',
+                                          widget.comment?.id,
+                                        )
+                                        .eqOrNull(
+                                          'user_id',
+                                          currentUserUid,
+                                        ),
+                                  );
+                                  context.safePop();
+                                }
                               },
                               child: Container(
                                 width: 30.0,
@@ -503,6 +534,10 @@ class _CustomCommentWidgetState extends State<CustomCommentWidget> {
                                     NewCommentWidget.routeName,
                                     queryParameters: {
                                       'postId': serializeParam(
+                                        widget.comment?.postId,
+                                        ParamType.String,
+                                      ),
+                                      'parentCommentId': serializeParam(
                                         widget.comment?.id,
                                         ParamType.String,
                                       ),

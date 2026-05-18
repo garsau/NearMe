@@ -473,12 +473,40 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                       Spacer(),
                       FFButtonWidget(
                         onPressed: () async {
-                          GoRouter.of(context).prepareAuthEvent();
-                          await authManager.signOut();
-                          GoRouter.of(context).clearRedirectLocation();
+                          Function() _navigate = () {};
+                          var confirmDialogResponse = await showDialog<bool>(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Sign out'),
+                                    content: Text(
+                                        'Are you sure you want to sign out?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, false),
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, true),
+                                        child: Text('Confirm'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ) ??
+                              false;
+                          if (confirmDialogResponse) {
+                            GoRouter.of(context).prepareAuthEvent();
+                            await authManager.signOut();
+                            GoRouter.of(context).clearRedirectLocation();
 
-                          context.goNamedAuth(
-                              CreateAccountWidget.routeName, context.mounted);
+                            _navigate = () => context.goNamedAuth(
+                                CreateAccountWidget.routeName, context.mounted);
+                          }
+
+                          _navigate();
                         },
                         text: 'Log out',
                         options: FFButtonOptions(

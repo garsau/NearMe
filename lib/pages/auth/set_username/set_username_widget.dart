@@ -211,42 +211,42 @@ class _SetUsernameWidgetState extends State<SetUsernameWidget> {
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                            width: 2.0,
+                                                .alternate,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
+                                                .secondaryText,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                            .secondaryBackground,
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -347,8 +347,8 @@ class _SetUsernameWidgetState extends State<SetUsernameWidget> {
                                       iconPadding:
                                           EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
                                       textStyle: FlutterFlowTheme.of(context)
                                           .titleSmall
                                           .override(
@@ -362,7 +362,8 @@ class _SetUsernameWidgetState extends State<SetUsernameWidget> {
                                                       .titleSmall
                                                       .fontStyle,
                                             ),
-                                            color: Colors.white,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
                                             letterSpacing: 0.0,
                                             fontWeight:
                                                 FlutterFlowTheme.of(context)
@@ -373,78 +374,11 @@ class _SetUsernameWidgetState extends State<SetUsernameWidget> {
                                                     .titleSmall
                                                     .fontStyle,
                                           ),
-                                      elevation: 3.0,
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
                                         width: 1.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                  ),
-                                ),
-
-                                // You will have to add an action on this rich text to go to your login page.
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 12.0, 0.0, 12.0),
-                                  child: RichText(
-                                    textScaler:
-                                        MediaQuery.of(context).textScaler,
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'Already have an account? ',
-                                          style: TextStyle(),
-                                        ),
-                                        TextSpan(
-                                          text: 'Sign In here',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        )
-                                      ],
-                                      style: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelLarge
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelLarge
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelLarge
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelLarge
-                                                    .fontStyle,
-                                          ),
+                                      borderRadius: BorderRadius.circular(24.0),
                                     ),
                                   ),
                                 ),

@@ -212,42 +212,42 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                            width: 2.0,
+                                                .alternate,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
+                                                .secondaryText,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                            .secondaryBackground,
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -318,42 +318,42 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                            width: 2.0,
+                                                .alternate,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
+                                                .secondaryText,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 2.0,
+                                            width: 1.0,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(8.0),
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                            .secondaryBackground,
                                         suffixIcon: InkWell(
                                           onTap: () async {
                                             safeSetState(() =>

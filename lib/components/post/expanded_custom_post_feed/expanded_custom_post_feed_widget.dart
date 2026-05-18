@@ -219,16 +219,42 @@ class _ExpandedCustomPostFeedWidgetState
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          await PostsTable().update(
-                            data: {
-                              'deleted_at':
-                                  supaSerialize<DateTime>(getCurrentTimestamp),
-                            },
-                            matchingRows: (rows) => rows.eqOrNull(
-                              'id',
-                              widget.postView?.id,
-                            ),
-                          );
+                          var confirmDialogResponse = await showDialog<bool>(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Delete message?'),
+                                    content: Text(
+                                        'It will disappear from the map and the feed.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, false),
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, true),
+                                        child: Text('Confirm'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ) ??
+                              false;
+                          if (confirmDialogResponse) {
+                            await PostsTable().update(
+                              data: {
+                                'deleted_at': supaSerialize<DateTime>(
+                                    getCurrentTimestamp),
+                              },
+                              matchingRows: (rows) => rows.eqOrNull(
+                                'id',
+                                widget.postView?.id,
+                              ),
+                            );
+                            context.safePop();
+                          }
                         },
                         child: Container(
                           width: 30.0,
