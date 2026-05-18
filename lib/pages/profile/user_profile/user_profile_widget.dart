@@ -11,7 +11,6 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'user_profile_model.dart';
 export 'user_profile_model.dart';
 
@@ -83,8 +82,6 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -388,7 +385,7 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               8.0, 0.0, 8.0, 0.0),
                           child: Text(
-                            FFAppState().userProfile.bio,
+                            widget.user!.bio,
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
