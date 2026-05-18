@@ -119,7 +119,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Welcome Back',
+                                  'Welcome Back ',
                                   style: FlutterFlowTheme.of(context)
                                       .displaySmall
                                       .override(
