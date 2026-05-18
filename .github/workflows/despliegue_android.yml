@@ -9,27 +9,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Validate manifest
         run: |
           sudo apt-get install -y libxml2-utils -q
           xmllint --noout android/app/src/main/AndroidManifest.xml && echo "Manifest OK"
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "17"
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.38.5'
           channel: stable
           cache: true
-
       - name: Get dependencies
         run: flutter pub get
-
       - name: Inject Google Maps API Key
         env:
           MAPS_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -41,15 +37,12 @@ jobs:
           else
             echo "API Key inyectada correctamente."
           fi
-
       - name: Build APK (release)
         run: flutter build apk --release
-
       - name: Package APK
         run: |
           mkdir -p out
           cp build/app/outputs/flutter-apk/app-release.apk out/
-
       - name: Deploy Android build
         run: |
           git clone https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/garsau/NearMe-Android mobile-repo
